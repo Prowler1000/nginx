@@ -1,0 +1,9 @@
+#!/bin/ash
+if [ -f /ssl/default/fullkey.pem ] && [ -f /ssl/default/privkey.pem ] && [ -f /ssl/default/chain.pem ]; then
+    echo "All default SSL files exist."
+else
+    echo "At least one default SSL file is missing. Recreating SSL files..."
+    rm -f /ssl/default/fullkey.pem /ssl/default/privkey.pem /ssl/default/chain.pem
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /ssl/default/privkey.pem -out /ssl/default/fullkey.pem -subj "/C=CA/ST=MB/L=Winnipeg/O=Organization/CN=example.com"
+    cat /ssl/default/fullkey.pem /ssl/default/privkey.pem > /ssl/default/chain.pem
+fi
