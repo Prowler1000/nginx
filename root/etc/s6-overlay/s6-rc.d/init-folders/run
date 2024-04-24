@@ -1,9 +1,4 @@
 #!/bin/ash
 mkdir -p \
-    /config/nginx \
-    /config/nginx/sites \
-    /config/nginx/auth \
-    /config/nginx/proxy \
-    /config/www \
     /ssl/default \
     /log
