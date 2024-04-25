@@ -1,8 +1,13 @@
 name: Build Docker Image
 
 on:
-    push:
-    workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - Dockerfile
+      - root/**
+  workflow_dispatch:
 
 env:
     IS_DEFAULT_BRANCH: ${{ github.ref_name == github.event.repository.default_branch }}
