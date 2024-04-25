@@ -108,10 +108,6 @@ RUN \
     find /etc/s6-overlay/s6-rc.d/ -name "run" -exec chmod +x {} \; && \
     find /etc/s6-overlay/s6-rc.d/ -name "up" -exec chmod +x {} \;
 
-RUN \
-    adduser -H -D nginx && \
-    su - nginx -c 'ulimit -n 65535'
-
 ENTRYPOINT [ "/init" ]
 
 EXPOSE 80/tcp 443/tcp 80/udp 443/udp
