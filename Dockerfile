@@ -7,12 +7,6 @@ ARG S6_OVERLAY_VERSION=3.1.4.1
 
 #ARG RTMP_VERSION=1.2.2
 
-# Downloads and builds are separated into individual stages to
-# allow for parallel building of dependencies while building
-# nginx. Downloads are also not unified into one image as a change
-# in one version would require a redownload and rebuild of all
-# dependencies.
-
 FROM alpine:latest AS build
 RUN \
     echo "Update and install dependencies" && \
@@ -104,12 +98,16 @@ COPY --from=build-nginx /usr/local/nginx /usr/local/nginx
 COPY --from=build-nginx /etc/nginx /etc/nginx
 
 COPY root/ /
+
+# Github Actions doesn't seem to preserve the flag to allow
+# s6 scripts to be executed.
 RUN \
     find /etc/s6-overlay/s6-rc.d/ -name "run" -exec chmod +x {} \; && \
     find /etc/s6-overlay/s6-rc.d/ -name "up" -exec chmod +x {} \;
 
 ENTRYPOINT [ "/init" ]
 
+# UDP is required for http3/QUIC.
 EXPOSE 80/tcp 443/tcp 80/udp 443/udp
 
 VOLUME [ "/config", "/ssl", "/log" ]
