@@ -1,6 +1,6 @@
 #!/bin/ash
-for file in $(find /defaults/nginx -type f); do
-    dest_file="/config/nginx${file#/defaults/nginx}"
+for file in $(find /defaults -type f); do
+    dest_file="/config${file#/defaults}"
     dest_dir=$(dirname "$dest_file") # In case I forget to add it to init-folders
     if [ ! -d "$dest_dir" ]; then
         mkdir -p "$dest_dir"

@@ -40,7 +40,7 @@ jobs:
                   type=raw,value=stable,enable=${{ env.IS_DEFAULT_BRANCH == 'true' }}
                   type=ref,event=branch,enable=${{ env.IS_DEFAULT_BRANCH == 'false' }}
 
-            - name: Build overall image
+            - name: Build image
               uses: docker/build-push-action@v5 
               with:
                 context: .

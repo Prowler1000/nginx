@@ -1,4 +1,4 @@
-ARG NGINX_VERSION=1.25.1
+ARG NGINX_VERSION=1.25.5
 ARG PCRE_VERSION=10.42
 ARG ZLIB_VERSION=1.3.1
 ARG LIBRESSL_VERSION=3.9.1
@@ -107,6 +107,10 @@ COPY root/ /
 RUN \
     find /etc/s6-overlay/s6-rc.d/ -name "run" -exec chmod +x {} \; && \
     find /etc/s6-overlay/s6-rc.d/ -name "up" -exec chmod +x {} \;
+
+RUN \
+    adduser -H -D nginx && \
+    su - nginx -c 'ulimit -n 65535'
 
 ENTRYPOINT [ "/init" ]
 
