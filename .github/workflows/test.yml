@@ -5,6 +5,8 @@ on:
       paths:
         - Dockerfile
         - root/**
+      branches-ignore:
+        - main
     pull_request:
 
 jobs:
