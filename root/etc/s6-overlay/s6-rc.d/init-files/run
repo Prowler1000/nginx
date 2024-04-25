@@ -1,13 +1,11 @@
 #!/bin/ash
-for file in /defaults/**/*; do
-    if [ -f "$file" ]; then
-        dest_file="/config${file#/defaults}"
-        dest_dir=$(dirname "$dest_file") # In case I forget to add it to init-folders
-        if [ ! -d "$dest_dir" ]; then
-            mkdir -p "$dest_dir"
-        fi
-        if [ ! -f "$dest_file" ]; then
-            cp "$file" "$dest_file"
-        fi
+for file in $(find /defaults/nginx -type f); do
+    dest_file="/config/nginx${file#/defaults/nginx}"
+    dest_dir=$(dirname "$dest_file") # In case I forget to add it to init-folders
+    if [ ! -d "$dest_dir" ]; then
+        mkdir -p "$dest_dir"
+    fi
+    if [ ! -f "$dest_file" ]; then
+        cp "$file" "$dest_file"
     fi
 done
