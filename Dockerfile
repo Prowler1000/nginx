@@ -7,6 +7,8 @@ ARG S6_OVERLAY_VERSION=3.1.4.1
 
 #ARG RTMP_VERSION=1.2.2
 
+ARG WEBUI_DIR=/webui
+
 FROM alpine:latest AS build
 RUN \
     echo "Update and install dependencies" && \
@@ -82,14 +84,27 @@ RUN make install
 
 # Download and extract s6-overlay
 
+FROM alpine:latest AS build-webui
+RUN apk add \
+    openssl \
+    npm
+
+COPY webui/ /build/
+WORKDIR /build/
+RUN npm ci
+RUN npm run build
+#ENTRYPOINT [ "tail", "-f", "/dev/null" ]
+
 FROM alpine:latest AS s6-base
 ARG S6_OVERLAY_VERSION
+
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz /tmp
 RUN tar xvf /tmp/s6-overlay-noarch.tar.xz -C /
 RUN tar xvf /tmp/s6-overlay-x86_64.tar.xz -C /
 RUN apk add \
-    openssl
+    openssl \
+    nodejs
 
 # Start the final image
 
@@ -99,12 +114,22 @@ COPY --from=build-nginx /etc/nginx /etc/nginx
 
 COPY root/ /
 
+ARG WEBUI_DIR
+RUN mkdir -p ${WEBUI_DIR}
+WORKDIR ${WEBUI_DIR}
+COPY --from=build-webui /build/public ./public
+RUN mkdir .next
+COPY --from=build-webui /build/.next/standalone ./
+COPY --from=build-webui /build/.next/static ./.next/static
+
 # Github Actions doesn't seem to preserve the flag to allow
 # s6 scripts to be executed.
 RUN \
     find /etc/s6-overlay/s6-rc.d/ -name "run" -exec chmod +x {} \; && \
     find /etc/s6-overlay/s6-rc.d/ -name "up" -exec chmod +x {} \;
 
+
+WORKDIR /
 ENTRYPOINT [ "/init" ]
 
 # UDP is required for http3/QUIC.

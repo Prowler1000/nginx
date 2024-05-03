@@ -1,3 +1,4 @@
 #!/command/execlineb -P
 cd /webui
+export PORT 8080
 node server.js
