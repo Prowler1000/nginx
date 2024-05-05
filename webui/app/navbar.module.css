@@ -1,0 +1,35 @@
+/* navbar.module.css */
+
+.navbar {
+    background-color: #3d3d3d;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Change justify-content to center */
+    padding: 0 20px;
+}
+
+.navbar_brand {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.navbar_links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    justify-content: center; /* Add justify-content to center */
+}
+
+.navbar_link {
+    text-decoration: none;
+    color: #c4c4c4;
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.navbar_link:hover {
+    color: #ffffff;
+}
