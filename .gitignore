@@ -1,2 +1,5 @@
 webui/node_modules
 **/node_modules
+
+*.db
+**/*.db
