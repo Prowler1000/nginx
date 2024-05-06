@@ -6,6 +6,16 @@
 }
 
 .server_root {
+
+}
+
+.server_list_footer {
+    width: 100%;
+}
+
+.server_list_add_btn {
+    margin-right: 0;
+    float: right;
 }
 
 .server_header {

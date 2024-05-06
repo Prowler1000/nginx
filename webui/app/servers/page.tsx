@@ -70,7 +70,12 @@ export default function Servers() {
 
     return (
         <main className={styles.page_root}>
-            {data.map(x => <ServerListItem key={x.key} data={x.data} showDetails={x.showDetails} toggleDetails={toggleDetails}/>)}
+            <div className={styles.server_list}>
+                {data.map(x => <ServerListItem key={x.key} data={x.data} showDetails={x.showDetails} toggleDetails={toggleDetails}/>)}
+                <div className={styles.server_list_footer}>
+                    <button className={styles.server_list_add_btn}>+</button>
+                </div>
+            </div>
         </main>
     )
 }
